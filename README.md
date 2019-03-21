@@ -4,7 +4,10 @@ This framework similar with Dubbo accomplishes the most important function of re
 
 # Directory Description
 ##### woo-server
-The directory of woo-server includes both of woo framework  
+This directory includes the source codes of woo framework server. 
 ##### server-example
+This directory demos the usage of woo framework server.
 ##### woo-client
+This directory contains all source codes of woo framework client.
 ##### client-example
+This directory illustrates how to use the woo framework client performing remote procedure call.
