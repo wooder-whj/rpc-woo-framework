@@ -17,13 +17,16 @@ public class WooServer implements ApplicationRunner {
     @Autowired
     WooServerProperties wooServerProperties;
 
+    public WooServer(){
+        initialContext();
+    }
+
     private void initialContext() {
         context = WooServerRpcContext.getServerRpcContext();
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        initialContext();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
