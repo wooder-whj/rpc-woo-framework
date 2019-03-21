@@ -6,23 +6,21 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import rpc.woo.framework.common.RpcContext;
+import org.springframework.context.ApplicationContext;
 import rpc.woo.framework.server.configuration.WooServerProperties;
 
 public class WooServer implements ApplicationRunner {
-    static RpcContext context=null;
+    public static ApplicationContext context=null;
     @Autowired
     WooServerProperties wooServerProperties;
 
-    public WooServer(){
-        initialContext();
-    }
-
-    private void initialContext() {
-        context = WooServerRpcContext.getServerRpcContext();
+    public WooServer(ApplicationContext applicationContext){
+        this.context=applicationContext;
     }
 
     @Override

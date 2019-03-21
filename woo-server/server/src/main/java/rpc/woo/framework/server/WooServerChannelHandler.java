@@ -6,8 +6,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
 import rpc.woo.framework.common.ProtocolBean;
-import rpc.woo.framework.common.RpcContext;
 
 import java.lang.reflect.Method;
 
@@ -18,7 +19,7 @@ public class WooServerChannelHandler extends SimpleChannelInboundHandler<String>
         if(StringUtil.isNullOrEmpty(msg)){
             return;
         }
-        ProtocolBean bean = callService(msg, WooServer.context);
+        ProtocolBean bean = callService(msg);
         String beanStr= JSON.toJSONString(bean);
         ctx.writeAndFlush(beanStr);
     }
@@ -26,10 +27,10 @@ public class WooServerChannelHandler extends SimpleChannelInboundHandler<String>
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
-        logger.error(cause.getMessage());
+        logger.error(cause.toString());
     }
 
-    private ProtocolBean callService(String msg, RpcContext context) throws Exception {
+    private ProtocolBean callService(String msg) throws Exception {
         if (StringUtil.isNullOrEmpty(msg)) {
             return null;
         }
@@ -39,11 +40,9 @@ public class WooServerChannelHandler extends SimpleChannelInboundHandler<String>
         for (int i = 0; i < argRefNames.length; i++) {
             argClasses[i] = Class.forName(argRefNames[i]);
         }
-        Method declaredMethod = context
-                .getBeanByRefName(bean.getInterfaceRefName())
-                .getClass()
-                .getDeclaredMethod(bean.getMethodName(), argClasses);
-        Object invoke = declaredMethod.invoke(context.getBeanByRefName(bean.getInterfaceRefName()), bean.getArgs());
+        Object service=WooServer.context.getBean(Class.forName(bean.getInterfaceRefName()));
+        Method declaredMethod = Class.forName(bean.getInterfaceRefName()).getDeclaredMethod(bean.getMethodName(), argClasses);
+        Object invoke = declaredMethod.invoke(service, bean.getArgs());
         ProtocolBean protocolBean = new ProtocolBean();
         protocolBean.setReturnObject(invoke);
         return protocolBean;

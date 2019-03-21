@@ -7,9 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import rpc.woo.framework.client.WooClientRpcContext;
 import rpc.woo.framework.client.WooRpcClient;
-import rpc.woo.framework.common.RpcContext;
 
 @Configuration
 @ConditionalOnWebApplication
@@ -21,9 +19,4 @@ public class WooClientAutoConfiguration {
     public WooRpcClient wooRpcClient(){
         return new WooRpcClient(wooClientProperties);
     }
-
-//    @Bean
-//    public WooClientRpcContext wooClientRpcContext(){
-//        return (WooClientRpcContext)WooClientRpcContext.getClientRpcContext();
-//    }
 }

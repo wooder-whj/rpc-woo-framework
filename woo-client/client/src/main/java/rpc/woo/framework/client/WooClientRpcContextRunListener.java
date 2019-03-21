@@ -1,12 +1,18 @@
 package rpc.woo.framework.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
-import rpc.woo.framework.common.RpcContext;
+import rpc.woo.framework.annotation.Caller;
+import rpc.woo.framework.annotation.Remote;
+import java.util.Arrays;
 
 public class WooClientRpcContextRunListener implements SpringApplicationRunListener {
+
+    private Logger logger= LoggerFactory.getLogger(WooClientRpcContextRunListener.class);
 
     public WooClientRpcContextRunListener(SpringApplication application, String[] args){
 
@@ -38,8 +44,22 @@ public class WooClientRpcContextRunListener implements SpringApplicationRunListe
 
     @Override
     public void running(ConfigurableApplicationContext context) {
-        RpcContext rpcContext = WooClientRpcContext.getClientRpcContext(context);
-        context.getBeanFactory().registerSingleton(RpcContext.class.getSimpleName(),rpcContext);
+        Arrays.stream(context.getBeanNamesForAnnotation(Caller.class)).forEach(name->{
+            try {
+                Class<?> type = Class.forName(context.getBean(name).getClass().getTypeName());
+                Arrays.stream(type.getDeclaredFields()).forEach(field -> {
+                    if(field.getDeclaredAnnotation(Remote.class)!=null){
+                        try{
+                             RpcProxy.newInstance().createRpcProxy(type,context);
+                        }catch (Exception e){
+                            logger.error(e.toString());
+                        }
+                    }
+                });
+            } catch (ClassNotFoundException e) {
+                logger.error(e.toString());
+            }
+        });
     }
 
     @Override
