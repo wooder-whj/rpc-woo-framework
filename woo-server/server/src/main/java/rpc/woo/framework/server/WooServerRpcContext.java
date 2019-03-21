@@ -17,7 +17,7 @@ public class WooServerRpcContext extends AbstractRpcContext {
 
     }
 
-    public static RpcContext getServerRpcContext(String basePackage){
+    public static RpcContext getServerRpcContext(){
         if(context!=null){
             return context;
         }

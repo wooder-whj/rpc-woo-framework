@@ -18,7 +18,7 @@ public class WooServer implements ApplicationRunner {
     WooServerProperties wooServerProperties;
 
     private void initialContext() {
-        context = WooServerRpcContext.getServerRpcContext(ClassLoader.getSystemResource("").getPath());
+        context = WooServerRpcContext.getServerRpcContext();
     }
 
     @Override
