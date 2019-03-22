@@ -1,6 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-rpc.woo.framework.client.configuration.WooClientAutoConfiguration
-
-org.springframework.boot.SpringApplicationRunListener=\
-  rpc.woo.framework.client.WooClientRpcContextRunListener
