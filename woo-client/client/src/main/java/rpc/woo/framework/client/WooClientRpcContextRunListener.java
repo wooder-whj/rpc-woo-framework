@@ -50,7 +50,7 @@ public class WooClientRpcContextRunListener implements SpringApplicationRunListe
                 Arrays.stream(type.getDeclaredFields()).forEach(field -> {
                     if(field.getDeclaredAnnotation(Remote.class)!=null){
                         try{
-                             RpcProxy.newInstance().createRpcProxy(type,context);
+                             RpcProxyFactory.newInstance().createRpcProxy(type,context);
                         }catch (Exception e){
                             logger.error(e.toString());
                         }
