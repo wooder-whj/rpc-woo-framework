@@ -10,11 +10,11 @@ import rpc.woo.framework.annotation.Caller;
 import rpc.woo.framework.annotation.Remote;
 import java.util.Arrays;
 
-public class WooClientRpcContextRunListener implements SpringApplicationRunListener {
+public class WooSpringApplicationRunListener implements SpringApplicationRunListener {
 
-    private Logger logger= LoggerFactory.getLogger(WooClientRpcContextRunListener.class);
+    private Logger logger= LoggerFactory.getLogger(WooSpringApplicationRunListener.class);
 
-    public WooClientRpcContextRunListener(SpringApplication application, String[] args){
+    public WooSpringApplicationRunListener(SpringApplication application, String[] args){
 
     }
     @Override

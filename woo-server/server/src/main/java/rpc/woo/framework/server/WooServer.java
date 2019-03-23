@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 import rpc.woo.framework.server.configuration.WooServerProperties;
 
 public class WooServer implements ApplicationRunner {
-    public static ApplicationContext context=null;
+    static ApplicationContext context=null;
     @Autowired
     WooServerProperties wooServerProperties;
 
