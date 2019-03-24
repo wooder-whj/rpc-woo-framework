@@ -26,6 +26,13 @@ public class RpcProxyFactory {
             return rpcProxyFactory;
         }
     }
+
+    /**
+     * Create and set a rpc proxy for a {@link Remote} field of a {@link rpc.woo.framework.annotation.Caller} component
+     * @param type a {@link rpc.woo.framework.annotation.Caller} component
+     * @param context the {@link ApplicationContext}
+     * @throws Exception
+     */
     public void createRpcProxy(Class<?> type, ApplicationContext context) throws Exception {
         for(Field field:type.getDeclaredFields()){
             Remote annotation = field.getDeclaredAnnotation(Remote.class);
@@ -48,6 +55,9 @@ public class RpcProxyFactory {
                                 bean.setArgRefNames(getMethodArgsReferenceNames(method));
                                 RpcClient<ProtocolBean> wooRpcClient = context.getBean(WooRpcClient.class);
                                 ProtocolBean protocolBean=null;
+                                /**
+                                 * an atomic operation group of send and receive for concurrency scenario
+                                 */
                                 synchronized (wooRpcClient){
                                     wooRpcClient.send(bean);
                                     protocolBean = wooRpcClient.receive();
@@ -57,6 +67,10 @@ public class RpcProxyFactory {
                                 }
                                 Class<?> returnType = method.getReturnType();
                                 if(returnType.isAssignableFrom(List.class)){
+                                    /**
+                                     * handle List return object, we hope return the exact type same as the declaration
+                                     * of the method of the interface rather than JSONArray<JSONObject>.
+                                     */
                                     List returnObj=null;
                                     if(returnType.isInterface()){
                                         returnObj=new ArrayList();
@@ -83,6 +97,7 @@ public class RpcProxyFactory {
                             }
                         });
                 field.setAccessible(true);
+                //set the proxy to the {@link Remote} field.
                 field.set(context.getBean(type),proxyInstance);
             }
         }
