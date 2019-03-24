@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.*;
 
 /**
- * Annotate a component which a {@link Remote} field
+ * Annotate a component which has a {@link Remote} field
  */
 @Component
 @Documented
