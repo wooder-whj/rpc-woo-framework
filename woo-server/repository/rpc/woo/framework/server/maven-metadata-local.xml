@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>rpc.woo.framework</groupId>
+  <artifactId>server</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20190325084026</lastUpdated>
+  </versioning>
+</metadata>

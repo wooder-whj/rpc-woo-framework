@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>rpc.woo.framework</groupId>
+  <artifactId>server-spring-boot-starter</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20190323232541</lastUpdated>
+  </versioning>
+</metadata>
