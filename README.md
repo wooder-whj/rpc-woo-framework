@@ -4,7 +4,7 @@ This framework similar with Dubbo accomplishes the most important function of re
 
 
 
-## Figures
+## Features
 
 - [x] Easy to Use
 - [x] Code Non-invasion
