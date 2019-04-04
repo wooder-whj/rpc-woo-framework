@@ -26,9 +26,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Client
 public class WooRpcClient implements RpcClient<ProtocolBean> {
-    Logger logger=LoggerFactory.getLogger(WooRpcClient.class);
+    private Logger logger=LoggerFactory.getLogger(WooRpcClient.class);
 
-    WooClientProperties wooClientProperties;
+    private WooClientProperties wooClientProperties;
 
     private EventLoopGroup group=new NioEventLoopGroup();
     private Bootstrap bootstrap=null;
@@ -49,6 +49,7 @@ public class WooRpcClient implements RpcClient<ProtocolBean> {
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .handler(new NettyRpcChannelInitializer());
          channel=connect();
+         channel.closeFuture().addListener(ChannelFutureListener.CLOSE);
     }
 
     private Channel connect(){
@@ -61,7 +62,7 @@ public class WooRpcClient implements RpcClient<ProtocolBean> {
     @Override
     public void send(ProtocolBean param){
         if(!this.channel.isOpen()){
-            this.channel.close();
+//            this.channel.close();
             this.channel=connect();
         }
         if(this.channel.isActive()){
@@ -111,15 +112,15 @@ public class WooRpcClient implements RpcClient<ProtocolBean> {
         }
       @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            lock.lock();
-            try{
-                if(!StringUtil.isNullOrEmpty((String)msg)){
-                    bean = JSON.parseObject((String)msg, ProtocolBean.class);
-                    received.signal();
-                }
-            }finally {
-                lock.unlock();
-            }
+          lock.lock();
+          try{
+              if(!StringUtil.isNullOrEmpty((String)msg)){
+                  bean = JSON.parseObject((String)msg, ProtocolBean.class);
+                  received.signal();
+              }
+          }finally {
+              lock.unlock();
+          }
         }
     }
 }
