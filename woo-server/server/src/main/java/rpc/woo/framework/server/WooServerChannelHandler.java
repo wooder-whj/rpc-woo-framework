@@ -9,17 +9,27 @@ import org.slf4j.LoggerFactory;
 import rpc.woo.framework.common.ProtocolBean;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class WooServerChannelHandler extends SimpleChannelInboundHandler<String> {
     private Logger logger= LoggerFactory.getLogger(WooServerChannelHandler.class);
+    private final ExecutorService executor= Executors.newCachedThreadPool();
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         if(StringUtil.isNullOrEmpty(msg)){
             return;
         }
-        ProtocolBean bean = callService(msg);
-        String beanStr= JSON.toJSONString(bean);
-        ctx.writeAndFlush(beanStr);
+        executor.submit(()->{
+            ProtocolBean bean = null;
+            try {
+                bean = callService(msg);
+                String beanStr= JSON.toJSONString(bean);
+                ctx.writeAndFlush(beanStr);
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e );
+            }
+        });
     }
 
     @Override
