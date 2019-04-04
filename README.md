@@ -7,6 +7,7 @@ This framework similar with Dubbo accomplishes the most important function of re
 ## Features
 
 - [x] Easy to Use
+- [x] Rapidly Response
 - [x] Code Non-invasion
 - [x] Annotation Driven
 - [x] User Insensitive
